@@ -1,9 +1,19 @@
-import "./globals.css";
+import "@/app/globals.css";
+
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+
+import { Poppins } from "next/font/google";
 import { Providers } from "@/app/providers";
 
-const inter = Inter({ subsets: ["latin"] });
+import { ReduxProvider } from "@/redux/Provider";
+
+import Sidebar from "@/components/Sidebar";
+import { Grid } from "@chakra-ui/react";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Productivity Nexus",
@@ -17,8 +27,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Providers>{children}</Providers>
+      <body className={poppins.className}>
+        <ReduxProvider>
+          <Providers>
+            <Grid templateColumns="repeat(10, 1fr)" gap={6}>
+              <Sidebar />
+
+              {children}
+            </Grid>
+          </Providers>
+        </ReduxProvider>
       </body>
     </html>
   );
