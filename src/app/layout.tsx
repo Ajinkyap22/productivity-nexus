@@ -7,7 +7,7 @@ import { Providers } from "@/app/providers";
 
 import { ReduxProvider } from "@/redux/Provider";
 
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "@/components/Sidebar/Sidebar";
 import { Grid } from "@chakra-ui/react";
 
 const poppins = Poppins({

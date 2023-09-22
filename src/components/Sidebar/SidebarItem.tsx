@@ -66,6 +66,8 @@ const SidebarItem = ({
           {item}
         </Text>
       )}
+
+      {/* TODO: Add notifications count here after integration */}
     </Button>
   );
 };
