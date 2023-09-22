@@ -30,7 +30,13 @@ export default function RootLayout({
       <body className={poppins.className}>
         <ReduxProvider>
           <Providers>
-            <Grid templateColumns="repeat(10, 1fr)" gap={6}>
+            <Grid
+              templateColumns={{
+                base: "repeat(9, 1fr)",
+                xl: "repeat(10, 1fr)",
+              }}
+              gap={6}
+            >
               <Sidebar />
 
               {children}
