@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 
+import { useRouter } from "next/navigation";
+
 import {
   Button,
   GridItem,
@@ -15,21 +17,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectIsExpanded, toggleSidebar } from "@/redux/slices/sidebarSlice";
 import { AppDispatch } from "@/redux/store";
 
-import SidebarItem from "@/components/SidebarItem";
+import SidebarItem from "@/components/Sidebar/SidebarItem";
+import UserDetails from "@/components/Sidebar/UserDetails";
 
 import { sidebarItems } from "@/data/sidebarItems";
 
 import { SidebarItems } from "@/types/sidebarItems";
-import UserDetails from "./UserDetails";
 
 const Sidebar = () => {
   const [activeItem, setActiveItem] = useState<SidebarItems>(SidebarItems.MAIL);
+
+  const router = useRouter();
 
   const isExpanded = useSelector(selectIsExpanded);
   const dispatch = useDispatch<AppDispatch>();
 
   const handleItemClick = (item: SidebarItems) => {
     setActiveItem(item);
+    router.push(`/${item.toLowerCase()}`);
   };
 
   return (
