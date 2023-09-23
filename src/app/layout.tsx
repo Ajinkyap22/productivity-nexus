@@ -35,7 +35,7 @@ export default function RootLayout({
                 base: "repeat(9, 1fr)",
                 xl: "repeat(10, 1fr)",
               }}
-              gap={6}
+              gap={5}
             >
               <Sidebar />
 

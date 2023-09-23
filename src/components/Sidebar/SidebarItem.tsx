@@ -1,23 +1,21 @@
 import React from "react";
 
-import { Button, Image, Text } from "@chakra-ui/react";
+import { Button, Text } from "@chakra-ui/react";
 
 import { SidebarItems } from "@/types/sidebarItems";
 
 type Props = {
   item: SidebarItems;
+  Icon: React.JSX.Element | null;
   isExpanded: boolean;
-  iconPath: string;
-  activeIconPath: string;
   isActive: boolean;
   handleClick: (item: SidebarItems) => void;
 };
 
 const SidebarItem = ({
   item,
+  Icon,
   isExpanded,
-  iconPath,
-  activeIconPath,
   isActive,
   handleClick,
 }: Props) => {
@@ -43,19 +41,12 @@ const SidebarItem = ({
       }}
     >
       {/* icon */}
-      <Image
-        src={isActive ? activeIconPath : iconPath}
-        alt={item}
-        minW="8"
-        minH="8"
-        w="8"
-        h="8"
-      />
+      {Icon}
 
       {/* text */}
       {isExpanded && (
         <Text
-          fontSize="xl"
+          fontSize="lg"
           fontWeight="normal"
           color={isActive ? "primary" : "trueGray"}
           display={{

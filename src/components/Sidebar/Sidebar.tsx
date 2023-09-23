@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
@@ -19,6 +19,11 @@ import { AppDispatch } from "@/redux/store";
 
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import UserDetails from "@/components/Sidebar/UserDetails";
+import MailIcon from "@/components/IconComponents/MailIcon";
+import CalendarIcon from "@/components/IconComponents/CalendarIcon";
+import EventsIcon from "@/components/IconComponents/EventsIcon";
+import AnalyticsIcon from "@/components/IconComponents/AnalyticsIcon";
+import ThemeIcon from "@/components/IconComponents/ThemeIcon";
 
 import { sidebarItems } from "@/data/sidebarItems";
 
@@ -36,6 +41,60 @@ const Sidebar = () => {
     setActiveItem(item);
     router.push(`/${item.toLowerCase()}`);
   };
+
+  const Icon = useCallback(
+    (item: SidebarItems) => {
+      switch (item) {
+        case SidebarItems.MAIL:
+          return (
+            <MailIcon
+              w={24}
+              h={24}
+              color={activeItem === SidebarItems.MAIL ? "#2FAC85" : "#566164"}
+            />
+          );
+        case SidebarItems.CALENDAR:
+          return (
+            <CalendarIcon
+              w={24}
+              h={24}
+              color={
+                activeItem === SidebarItems.CALENDAR ? "#2FAC85" : "#566164"
+              }
+            />
+          );
+        case SidebarItems.EVENTS:
+          return (
+            <EventsIcon
+              w={24}
+              h={24}
+              color={activeItem === SidebarItems.EVENTS ? "#2FAC85" : "#566164"}
+            />
+          );
+        case SidebarItems.ANALYTICS:
+          return (
+            <AnalyticsIcon
+              w={24}
+              h={24}
+              color={
+                activeItem === SidebarItems.ANALYTICS ? "#2FAC85" : "#566164"
+              }
+            />
+          );
+        case SidebarItems.THEME:
+          return (
+            <ThemeIcon
+              w={24}
+              h={24}
+              color={activeItem === SidebarItems.THEME ? "#2FAC85" : "#566164"}
+            />
+          );
+        default:
+          return null;
+      }
+    },
+    [activeItem]
+  );
 
   return (
     <GridItem
@@ -117,9 +176,8 @@ const Sidebar = () => {
             <SidebarItem
               key={index}
               item={item.item as SidebarItems}
+              Icon={Icon(item.item as SidebarItems)}
               isExpanded={isExpanded}
-              iconPath={item.iconPath}
-              activeIconPath={item.activeIconPath}
               isActive={activeItem === item.item}
               handleClick={handleItemClick}
             />

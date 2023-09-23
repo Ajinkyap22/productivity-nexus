@@ -19,7 +19,7 @@ const UserDetails = ({ isExpanded }: Props) => {
       {/* name */}
       {isExpanded && (
         <Text
-          fontSize="lg"
+          fontSize="md"
           fontWeight="normal"
           display={{
             base: "none",

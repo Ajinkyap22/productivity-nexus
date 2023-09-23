@@ -1,9 +1,29 @@
+"use client";
+
 import React from "react";
 
-type Props = {};
+import { GridItem } from "@chakra-ui/react";
 
-const Mail = (props: Props) => {
-  return <div>Mail</div>;
+import { useSelector } from "react-redux";
+import { selectIsExpanded } from "@/redux/slices/sidebarSlice";
+import MailSidebar from "@/components/Mail/MailSidebar";
+
+const Mail = () => {
+  const isExpanded = useSelector(selectIsExpanded);
+
+  return (
+    <GridItem
+      colSpan={{
+        base: 8,
+        xl: isExpanded ? 8 : 9,
+      }}
+      display="grid"
+      gridTemplateColumns="repeat(10, 1fr)"
+    >
+      {/* sidebar */}
+      <MailSidebar />
+    </GridItem>
+  );
 };
 
 export default Mail;
