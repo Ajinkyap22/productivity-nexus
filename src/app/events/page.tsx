@@ -5,21 +5,15 @@ import React from "react";
 import {
   GridItem,
   Text,
-  TableContainer,
-  Table,
-  Thead,
-  Tbody,
-  Th,
-  Tr,
-  Td,
   HStack,
   Skeleton,
   Stack,
+  Button,
+  Image,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { useQuery } from "@tanstack/react-query";
-import moment from "moment";
-import { rrulestr } from "rrule";
 
 import { getEvents } from "@/services/eventsService";
 
@@ -27,13 +21,14 @@ import { selectIsExpanded } from "@/redux/slices/sidebarSlice";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/redux/slices/userSlice";
 
-import { eventColumns } from "@/data/eventColumns";
-
-import { Event } from "@/types/event";
+import EventsList from "@/components/Events/EventsList";
+import EventModal from "@/components/Events/EventModal";
 
 const Events = () => {
   const isExpanded = useSelector(selectIsExpanded);
   const user = useSelector(selectUser);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { data, isLoading } = useQuery(
     ["events", user?.email],
@@ -43,21 +38,6 @@ const Events = () => {
     }
   );
 
-  // title + description
-  // start time
-  // duration
-  // organizer email
-  // location
-  // no.of participants
-
-  const rruleToText = (rrule: string[]) => {
-    if (!rrule.length) {
-      return "Does not repeat";
-    }
-
-    return rrule.map((rule) => rrulestr(rule).toText()).join(", ");
-  };
-
   return (
     <GridItem
       colSpan={{
@@ -65,14 +45,36 @@ const Events = () => {
         xl: isExpanded ? 8 : 9,
       }}
     >
-      <HStack alignItems="baseline" mt="6" px="2" gap="3">
-        <Text fontSize="2xl" fontWeight="medium">
-          Upcoming Events
-        </Text>
+      <HStack
+        justifyContent="space-between"
+        alignItems="center"
+        mt="6"
+        pl="2"
+        pr="8"
+      >
+        <HStack gap="3" alignItems="baseline">
+          <Text fontSize="2xl" fontWeight="medium">
+            Upcoming Events
+          </Text>
 
-        <Text fontSize="sm" fontWeight="normal">
-          (Next 7 days)
-        </Text>
+          <Text fontSize="sm" fontWeight="normal">
+            (Next 7 days)
+          </Text>
+        </HStack>
+
+        <Button
+          onClick={onOpen}
+          bg="primary"
+          color="white"
+          _hover={{
+            bg: "primaryDark",
+          }}
+          gap="2"
+        >
+          <Image src="/icons/plus.svg" alt="plus" w="4" h="4" />
+
+          <Text fontSize="sm">Create</Text>
+        </Button>
       </HStack>
 
       {isLoading ? (
@@ -82,48 +84,10 @@ const Events = () => {
           <Skeleton height="32px" />
         </Stack>
       ) : (
-        <TableContainer mt="12" mr="8">
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                {eventColumns.map((column, i) => (
-                  <Th key={i}>{column}</Th>
-                ))}
-              </Tr>
-            </Thead>
-
-            <Tbody>
-              {data &&
-                data.map((event: Event, i: number) => (
-                  <Tr
-                    key={event.id}
-                    _hover={{
-                      bg: "gray.100",
-                    }}
-                  >
-                    {/* title */}
-                    <Td fontSize="sm">{event.title}</Td>
-                    {/* date */}
-                    <Td fontSize="sm">
-                      {moment(event.when.start_time).format("ll")}
-                    </Td>
-                    {/* time */}
-                    <Td fontSize="sm">
-                      {moment(event.when.start_time).format("LT")} -{" "}
-                      {moment(event.when.end_time).format("LT")}
-                    </Td>
-                    {/* organizer */}
-                    <Td fontSize="sm">{event.organizer_email}</Td>
-                    {/* location */}
-                    <Td fontSize="sm">{event.location || "Not Set"}</Td>
-                    {/* repeats */}
-                    <Td fontSize="sm">{rruleToText(event.recurrence.rrule)}</Td>
-                  </Tr>
-                ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
+        <EventsList events={data} />
       )}
+
+      <EventModal isOpen={isOpen} onClose={onClose} />
     </GridItem>
   );
 };
