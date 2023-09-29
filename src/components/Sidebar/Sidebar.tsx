@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import {
   Button,
@@ -38,6 +38,17 @@ const Sidebar = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const currentActiveItem = sidebarItems.find(
+      (item) => item.item.toLowerCase() === pathname.substring(1)
+    );
+
+    if (currentActiveItem) {
+      setActiveItem(currentActiveItem.item as SidebarItems);
+    }
+  }, []);
 
   const handleItemClick = (item: SidebarItems) => {
     setActiveItem(item);
