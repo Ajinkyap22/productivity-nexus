@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import React, { useCallback, useState } from "react";
@@ -14,8 +15,8 @@ import {
 } from "@chakra-ui/react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectIsExpanded, toggleSidebar } from "@/redux/slices/sidebarSlice";
 import { AppDispatch } from "@/redux/store";
+import { selectIsExpanded, toggleSidebar } from "@/redux/slices/sidebarSlice";
 
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import UserDetails from "@/components/Sidebar/UserDetails";
@@ -32,10 +33,11 @@ import { SidebarItems } from "@/types/sidebarItems";
 const Sidebar = () => {
   const [activeItem, setActiveItem] = useState<SidebarItems>(SidebarItems.MAIL);
 
-  const router = useRouter();
-
   const isExpanded = useSelector(selectIsExpanded);
+
   const dispatch = useDispatch<AppDispatch>();
+
+  const router = useRouter();
 
   const handleItemClick = (item: SidebarItems) => {
     setActiveItem(item);
