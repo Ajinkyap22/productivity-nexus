@@ -3,12 +3,12 @@ import "@/app/globals.css";
 import type { Metadata } from "next";
 
 import { Poppins } from "next/font/google";
-import { Providers } from "@/app/providers";
+import { Providers, QueryClientProviders } from "@/app/providers";
+
+import { Grid } from "@chakra-ui/react";
 
 import { ReduxProvider } from "@/redux/Provider";
-
-import Sidebar from "@/components/Sidebar/Sidebar";
-import { Grid } from "@chakra-ui/react";
+import MainContent from "@/components/MainContent";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -28,21 +28,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <ReduxProvider>
-          <Providers>
-            <Grid
-              templateColumns={{
-                base: "repeat(9, 1fr)",
-                xl: "repeat(10, 1fr)",
-              }}
-              gap={5}
-            >
-              <Sidebar />
-
-              {children}
-            </Grid>
-          </Providers>
-        </ReduxProvider>
+        <QueryClientProviders>
+          <ReduxProvider>
+            <Providers>
+              <Grid
+                templateColumns={{
+                  base: "repeat(9, 1fr)",
+                  xl: "repeat(10, 1fr)",
+                }}
+                h="full"
+                gap={5}
+              >
+                <MainContent>{children}</MainContent>
+              </Grid>
+            </Providers>
+          </ReduxProvider>
+        </QueryClientProviders>
       </body>
     </html>
   );

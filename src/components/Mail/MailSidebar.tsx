@@ -113,7 +113,7 @@ const MailSidebar = () => {
         justifyContent="flex-start"
         gap={4}
         _hover={{
-          bg: "primary",
+          bg: "primaryDark",
         }}
       >
         <Image src="/icons/plus.svg" alt="new mail" w="5" h="5" />
