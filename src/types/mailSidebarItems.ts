@@ -4,5 +4,9 @@ export enum MailSidebarItems {
   FAVORITES = "Favorites",
   DRAFTS = "Drafts",
   SCHEDULED = "Scheduled",
-  MORE = "More",
+  TRASH = "Trash",
+  SPAM = "Spam",
+  PERSONAL = "Personal",
+  SOCIAL = "Social",
+  PROMOTIONS = "Promotions",
 }

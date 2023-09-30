@@ -2,15 +2,18 @@ import React from "react";
 
 import { Button, Text } from "@chakra-ui/react";
 import LabelIcon from "@/components/IconComponents/LabelIcon";
+import { MailSidebarItems } from "@/types/mailSidebarItems";
 
 type Props = {
   color: string;
-  label: string;
+  label: MailSidebarItems;
+  handleClick: (item: MailSidebarItems) => void;
 };
 
-const Label = ({ color, label }: Props) => {
+const Label = ({ color, label, handleClick }: Props) => {
   return (
     <Button
+      onClick={() => handleClick(label)}
       bg="transparent"
       py="0"
       px="1"

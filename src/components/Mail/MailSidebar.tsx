@@ -16,24 +16,19 @@ import MailSidebarItem from "@/components/Mail/MailSidebarItem";
 import InboxIcon from "@/components/IconComponents/InboxIcon";
 import SentIcon from "@/components/IconComponents/SentIcon";
 import FavoritesIcon from "@/components/IconComponents/FavoritesIcon";
-import DraftsIcon from "@/components/IconComponents/DraftsIcon";
+import TrashIcon from "@/components/IconComponents/TrashIcon";
 import ScheduledIcon from "@/components/IconComponents/ScheduledIcon";
-import MoreIcon from "@/components/IconComponents/MoreIcon";
 import Label from "@/components/Mail/Label";
 
 import { MailSidebarItems } from "@/types/mailSidebarItems";
+import SpamIcon from "../IconComponents/SpamIcon";
 
-const MailSidebar = () => {
-  const [activeItem, setActiveItem] = useState<MailSidebarItems>(
-    MailSidebarItems.INBOX
-  );
+type Props = {
+  activeItem: MailSidebarItems;
+  handleClick: (item: MailSidebarItems) => void;
+};
 
-  const handleActiveItem = (item: MailSidebarItems) => {
-    if (item === MailSidebarItems.MORE) return;
-
-    setActiveItem(item);
-  };
-
+const MailSidebar = ({ activeItem, handleClick }: Props) => {
   const Icon = useCallback(
     (item: MailSidebarItems) => {
       switch (item) {
@@ -69,19 +64,19 @@ const MailSidebar = () => {
               color={activeItem === item ? "#2FAC85" : "#777777"}
             />
           );
-        case "Drafts":
+        case "Trash":
           return (
-            <DraftsIcon
-              w={22}
-              h={22}
+            <TrashIcon
+              w={18}
+              h={18}
               color={activeItem === item ? "#2FAC85" : "#777777"}
             />
           );
-        case "More":
+        case "Spam":
           return (
-            <MoreIcon
-              w={22}
-              h={22}
+            <SpamIcon
+              w={18}
+              h={18}
               color={activeItem === item ? "#2FAC85" : "#777777"}
             />
           );
@@ -134,7 +129,7 @@ const MailSidebar = () => {
             item={item}
             Icon={Icon(item)}
             isActive={item === activeItem}
-            handleClick={handleActiveItem}
+            handleClick={handleClick}
           />
         ))}
       </VStack>
@@ -148,7 +143,7 @@ const MailSidebar = () => {
         <Text color="trueGray.200" size="md" fontWeight="semibold">
           Labels
         </Text>
-        <Button
+        {/* <Button
           p="0"
           bg="transparent"
           _hover={{
@@ -156,15 +151,27 @@ const MailSidebar = () => {
           }}
         >
           <Image src="/icons/plus-circle.svg" alt="new label" w="6" h="6" />
-        </Button>
+        </Button> */}
       </HStack>
 
       <VStack gap={2} mt={2}>
-        <Label color="#FD3D00" label="Work" />
+        <Label
+          color="#FD3D00"
+          label={MailSidebarItems.PERSONAL}
+          handleClick={handleClick}
+        />
 
-        <Label color="#00BEFA" label="Personal" />
+        <Label
+          color="#00BEFA"
+          label={MailSidebarItems.SOCIAL}
+          handleClick={handleClick}
+        />
 
-        <Label color="#13C58D" label="Newsletters" />
+        <Label
+          color="#13C58D"
+          label={MailSidebarItems.PROMOTIONS}
+          handleClick={handleClick}
+        />
       </VStack>
     </GridItem>
   );
