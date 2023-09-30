@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 import {
   GridItem,
@@ -23,10 +23,14 @@ import { selectUser } from "@/redux/slices/userSlice";
 
 import EventsList from "@/components/Events/EventsList";
 import EventModal from "@/components/Events/EventModal";
+import { Event } from "@/types/event";
 
 const Events = () => {
   const isExpanded = useSelector(selectIsExpanded);
   const user = useSelector(selectUser);
+
+  const [modalMode, setModalMode] = useState<"create" | "view">("create");
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -37,6 +41,17 @@ const Events = () => {
       enabled: !!user?.email,
     }
   );
+
+  const handleEventClick = (event: Event) => {
+    setSelectedEvent(event);
+    setModalMode("view");
+    onOpen();
+  };
+
+  const openCreateModal = () => {
+    setModalMode("create");
+    onOpen();
+  };
 
   return (
     <GridItem
@@ -63,7 +78,7 @@ const Events = () => {
         </HStack>
 
         <Button
-          onClick={onOpen}
+          onClick={openCreateModal}
           bg="primary"
           color="white"
           _hover={{
@@ -84,10 +99,15 @@ const Events = () => {
           <Skeleton height="32px" />
         </Stack>
       ) : (
-        <EventsList events={data} />
+        <EventsList events={data} handleClick={handleEventClick} />
       )}
 
-      <EventModal isOpen={isOpen} onClose={onClose} />
+      <EventModal
+        modalMode={modalMode}
+        isOpen={isOpen}
+        onClose={onClose}
+        selectedEvent={selectedEvent}
+      />
     </GridItem>
   );
 };

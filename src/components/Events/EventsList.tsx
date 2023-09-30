@@ -13,23 +13,17 @@ import {
 import { eventColumns } from "@/data/eventColumns";
 
 import { Event } from "@/types/event";
+
 import moment from "moment";
 
-import { rrulestr } from "rrule";
+import { rruleToText } from "@/utils/rruleToText";
 
 type Props = {
   events: Event[];
+  handleClick: (event: Event) => void;
 };
 
-const EventsList = ({ events }: Props) => {
-  const rruleToText = (rrule: string[]) => {
-    if (!rrule.length) {
-      return "Does not repeat";
-    }
-
-    return rrule.map((rule) => rrulestr(rule).toText()).join(", ");
-  };
-
+const EventsList = ({ events, handleClick }: Props) => {
   return (
     <TableContainer mt="12" mr="8">
       <Table variant="simple">
@@ -50,6 +44,7 @@ const EventsList = ({ events }: Props) => {
                   bg: "gray.100",
                 }}
                 cursor="pointer"
+                onClick={() => handleClick(event)}
               >
                 {/* title */}
                 <Td fontSize="sm">{event.title}</Td>
@@ -67,7 +62,7 @@ const EventsList = ({ events }: Props) => {
                 {/* location */}
                 <Td fontSize="sm">{event.location || "Not Set"}</Td>
                 {/* repeats */}
-                <Td fontSize="sm">{rruleToText(event.recurrence.rrule)}</Td>
+                <Td fontSize="sm">{rruleToText(event.recurrence?.rrule)}</Td>
               </Tr>
             ))}
         </Tbody>

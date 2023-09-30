@@ -8,59 +8,41 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
-  useDisclosure,
   Button,
   Input,
 } from "@chakra-ui/react";
 
+import EventDetails from "@/components/Events/EventDetails";
+
+import { Event } from "@/types/event";
+import EventForm from "./EventForm";
+
 type Props = {
+  modalMode: "create" | "view";
+  selectedEvent: Event | null;
   isOpen: boolean;
   onClose: () => void;
 };
 
-const EventModal = ({ isOpen, onClose }: Props) => {
+const EventModal = ({ modalMode, selectedEvent, isOpen, onClose }: Props) => {
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="sm">
       <DrawerOverlay />
 
       <DrawerContent pb="3" pt="6">
-        <DrawerCloseButton />
+        <DrawerCloseButton outline="none" />
 
         <DrawerHeader fontSize="2xl" color="blackAlpha.800">
-          Create Event
+          {modalMode === "create" ? "Create Event" : "Event Details"}
         </DrawerHeader>
 
         <DrawerBody>
-          <Input placeholder="Type here..." />
+          {modalMode === "view" ? (
+            <EventDetails selectedEvent={selectedEvent} />
+          ) : (
+            <EventForm onClose={onClose} />
+          )}
         </DrawerBody>
-
-        <DrawerFooter>
-          <Button
-            variant="outline"
-            mr={3}
-            onClick={onClose}
-            flex={1}
-            py="6"
-            h="0"
-            borderRadius="lg"
-          >
-            Cancel
-          </Button>
-
-          <Button
-            bg="primary"
-            color="white"
-            flex={1}
-            py="6"
-            h="0"
-            borderRadius="lg"
-            _hover={{
-              bg: "primaryDark",
-            }}
-          >
-            Create
-          </Button>
-        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );

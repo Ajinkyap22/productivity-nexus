@@ -11,3 +11,25 @@ export const getEvents = async (email: string) => {
 
   return response.data;
 };
+
+export const createEvent = async (
+  email: string,
+  title: string,
+  description: string,
+  startTime: number,
+  endTime: number,
+  participants: string
+) => {
+  const body = {
+    email,
+    description,
+    title,
+    startTime,
+    endTime,
+    participants,
+  };
+
+  const response = await axios.post(`${API_URL}/create-events`, body);
+
+  return response.data;
+};
