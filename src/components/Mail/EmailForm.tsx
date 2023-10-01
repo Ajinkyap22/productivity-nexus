@@ -27,21 +27,17 @@ import uniqid from "uniqid";
 
 import { Recipient } from "@/types/Recipient";
 
-import {
-  scheduleMail,
-  sendMail,
-  sentimentAnalysis,
-  summarize,
-} from "@/services/mailService";
+import { scheduleMail, sendMail } from "@/services/mailService";
 
 import { useSelector } from "react-redux";
 import { selectUser } from "@/redux/slices/userSlice";
 
 import ScheduleModal from "@/components/Mail/ScheduleModal";
+import SentimentAnalysis from "@/components/Mail/SentimentAnalysis";
+import Summarize from "@/components/Mail/Summarize";
 
 import { ScheduledMail } from "@/types/Mail";
-import SentimentAnalysis from "./SentimentAnalysis";
-import Summarize from "./Summarize";
+import SpeechInput from "./SpeechInput";
 
 type Props = {
   handleClose: () => void;
@@ -108,6 +104,10 @@ const EmailForm = ({ handleClose }: Props) => {
 
   const handleBodyChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setBody(e.target.value);
+  };
+
+  const handleTranscriptChange = (transcript: string) => {
+    setBody(transcript);
   };
 
   const handleScheduledAtChange = (date: string) => {
@@ -298,7 +298,10 @@ const EmailForm = ({ handleClose }: Props) => {
           <Summarize isDisabled={!body} content={body} />
 
           <SentimentAnalysis isDisabled={!body} content={body} />
+
+          <SpeechInput handleTranscript={handleTranscriptChange} />
         </HStack>
+
         <HStack>
           {/* clear */}
           <Button
