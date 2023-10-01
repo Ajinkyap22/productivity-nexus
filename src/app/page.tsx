@@ -77,7 +77,7 @@ export default function Home() {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      h="full"
+      h="100vh"
     >
       <VStack gap={8} borderRadius="md" p="12" shadow="base">
         <VStack>
