@@ -3,7 +3,7 @@ import { Recipient } from "@/types/Recipient";
 export type Mail = {
   subject: string;
   body: string;
-  recipientArray: Recipient;
+  recipientArray: Recipient[];
 };
 
 export type ScheduledMail = Mail & {

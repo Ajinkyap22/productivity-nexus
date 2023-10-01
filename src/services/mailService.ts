@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { Recipient } from "@/types/Recipient";
-import { Mail, ScheduledMail } from "@/types/Mail";
+import { AllMail, Mail, ScheduledMail } from "@/types/Mail";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -75,7 +75,7 @@ export const sendMail = async (
   return response.data;
 };
 
-export const starMail = async (email: string, starredEmail: Mail) => {
+export const starMail = async (email: string, starredEmail: AllMail) => {
   const body = {
     email,
     starredEmail: starredEmail,

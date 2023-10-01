@@ -5,6 +5,7 @@ import React, { useCallback } from "react";
 import { GridItem, HStack, Spinner, VStack, Text } from "@chakra-ui/react";
 
 import { MailSidebarItems } from "@/types/mailSidebarItems";
+import { AllMail } from "@/types/Mail";
 
 import {
   getLabelMail,
@@ -16,12 +17,15 @@ import {
   getTrashMail,
 } from "@/services/mailService";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "@/redux/slices/userSlice";
+import { AppDispatch } from "@/redux/store";
+import { setActiveMail } from "@/redux/slices/mailSlice";
+
 import { useQuery } from "@tanstack/react-query";
-import { AllMail } from "@/types/Mail";
 
 import moment from "moment";
+import { useRouter } from "next/navigation";
 
 type Props = {
   activeItem: MailSidebarItems;
@@ -29,6 +33,9 @@ type Props = {
 
 const MailList = ({ activeItem }: Props) => {
   const user = useSelector(selectUser);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const router = useRouter();
 
   const getQueryFunction = useCallback(() => {
     if (!user) return () => {};
@@ -38,7 +45,7 @@ const MailList = ({ activeItem }: Props) => {
         return getMail(user.email);
       case MailSidebarItems.SENT:
         return getSentMail(user.email);
-      case MailSidebarItems.FAVORITES:
+      case MailSidebarItems.STARRED:
         return getStarredMail(user.email);
       case MailSidebarItems.SCHEDULED:
         return getScheduledMail(user.email);
@@ -61,6 +68,13 @@ const MailList = ({ activeItem }: Props) => {
     enabled: !!user,
   });
 
+  const handleClick = (mail: AllMail) => {
+    dispatch(setActiveMail(mail));
+    localStorage.setItem("activeMail", JSON.stringify(mail));
+
+    router.push(`/mail/${mail.ID}`);
+  };
+
   return (
     <GridItem
       colSpan={{
@@ -72,7 +86,7 @@ const MailList = ({ activeItem }: Props) => {
       borderRadius="lg"
     >
       {isLoading ? (
-        <HStack justifyContent="center" alignItems="center" h="full">
+        <HStack justifyContent="center" alignItems="center" h="96vh">
           <Spinner size="lg" color="primary" />
         </HStack>
       ) : (
@@ -92,6 +106,7 @@ const MailList = ({ activeItem }: Props) => {
               _hover={{
                 boxShadow: "0px 0px 4px 0px rgba(0, 0, 0, 0.25)",
               }}
+              onClick={() => handleClick(mail)}
             >
               {/* sender */}
               <GridItem colSpan={3}>

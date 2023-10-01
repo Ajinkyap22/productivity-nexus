@@ -36,7 +36,7 @@ export default function RootLayout({
                   base: "repeat(9, 1fr)",
                   xl: "repeat(10, 1fr)",
                 }}
-                h="full"
+                // h="full"
                 gap={5}
               >
                 <MainContent>{children}</MainContent>

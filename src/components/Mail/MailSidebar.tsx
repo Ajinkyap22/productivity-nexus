@@ -48,7 +48,7 @@ const MailSidebar = ({ activeItem, handleClick }: Props) => {
               color={activeItem === item ? "#2FAC85" : "#777777"}
             />
           );
-        case "Favorites":
+        case "Starred":
           return (
             <FavoritesIcon
               w={22}
@@ -99,6 +99,9 @@ const MailSidebar = ({ activeItem, handleClick }: Props) => {
       borderRadius="xl"
       boxShadow="0px 0px 4px 0px rgba(0, 0, 0, 0.25)"
       p="3"
+      h="96vh"
+      position="sticky"
+      top="3"
     >
       {/* new mail button */}
       <Button
@@ -143,33 +146,27 @@ const MailSidebar = ({ activeItem, handleClick }: Props) => {
         <Text color="trueGray.200" size="md" fontWeight="semibold">
           Labels
         </Text>
-        {/* <Button
-          p="0"
-          bg="transparent"
-          _hover={{
-            bg: "green.50",
-          }}
-        >
-          <Image src="/icons/plus-circle.svg" alt="new label" w="6" h="6" />
-        </Button> */}
       </HStack>
 
       <VStack gap={2} mt={2}>
         <Label
           color="#FD3D00"
           label={MailSidebarItems.PERSONAL}
+          isActive={activeItem === MailSidebarItems.PERSONAL}
           handleClick={handleClick}
         />
 
         <Label
           color="#00BEFA"
           label={MailSidebarItems.SOCIAL}
+          isActive={activeItem === MailSidebarItems.SOCIAL}
           handleClick={handleClick}
         />
 
         <Label
           color="#13C58D"
           label={MailSidebarItems.PROMOTIONS}
+          isActive={activeItem === MailSidebarItems.PROMOTIONS}
           handleClick={handleClick}
         />
       </VStack>
