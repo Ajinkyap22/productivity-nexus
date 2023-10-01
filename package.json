@@ -28,6 +28,10 @@
     "react-dom": "18.2.0",
     "react-redux": "^8.1.2",
     "rrule": "^2.7.2",
-    "typescript": "5.2.2"
+    "typescript": "5.2.2",
+    "uniqid": "^5.4.0"
+  },
+  "devDependencies": {
+    "@types/uniqid": "^5.3.2"
   }
 }

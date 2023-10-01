@@ -26,9 +26,10 @@ import SpamIcon from "../IconComponents/SpamIcon";
 type Props = {
   activeItem: MailSidebarItems;
   handleClick: (item: MailSidebarItems) => void;
+  openMailForm: () => void;
 };
 
-const MailSidebar = ({ activeItem, handleClick }: Props) => {
+const MailSidebar = ({ activeItem, handleClick, openMailForm }: Props) => {
   const Icon = useCallback(
     (item: MailSidebarItems) => {
       switch (item) {
@@ -105,6 +106,7 @@ const MailSidebar = ({ activeItem, handleClick }: Props) => {
     >
       {/* new mail button */}
       <Button
+        onClick={openMailForm}
         w="full"
         bg="primary"
         borderRadius="lg"

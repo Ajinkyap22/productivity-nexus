@@ -91,9 +91,9 @@ const MailList = ({ activeItem }: Props) => {
         </HStack>
       ) : (
         <VStack gap="0">
-          {data.map((mail: AllMail) => (
+          {data.map((mail: AllMail, i: number) => (
             <HStack
-              key={mail.ID}
+              key={i}
               w="full"
               py="3"
               px="4"

@@ -6,8 +6,13 @@ export type Mail = {
   recipientArray: Recipient[];
 };
 
-export type ScheduledMail = Mail & {
+export type ScheduledMail = {
+  ID: string;
+  subject: string;
+  body: string;
   scheduledAt: string;
+  sentTo: Sent[];
+  sentBy: Sent[];
 };
 
 export interface AllMail {

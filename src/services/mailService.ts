@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { Recipient } from "@/types/Recipient";
-import { AllMail, Mail, ScheduledMail } from "@/types/Mail";
+import { AllMail, ScheduledMail } from "@/types/Mail";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -52,8 +52,6 @@ export const getLabelMail = async (email: string, label: string) => {
 
   const response = await axios.post(`${API_URL}/read_email`, body);
 
-  console.log(response.data);
-
   return response.data[`Category ${label}`];
 };
 
@@ -98,11 +96,11 @@ export const getStarredMail = async (email: string) => {
 
 export const scheduleMail = async (
   email: string,
-  scheduleMail: ScheduledMail
+  scheduledEmail: ScheduledMail
 ) => {
   const body = {
     email,
-    scheduleEmail: scheduleMail,
+    scheduledEmail,
   };
 
   const response = await axios.post(`${API_URL}/schedule_email`, body);
@@ -118,4 +116,25 @@ export const getScheduledMail = async (email: string) => {
   const response = await axios.post(`${API_URL}/scheduled_mails`, body);
 
   return response.data;
+};
+
+export const summarize = async (content: string, number: number) => {
+  const body = {
+    content,
+    number,
+  };
+
+  const response = await axios.post(`${API_URL}/summarize`, body);
+
+  return response;
+};
+
+export const sentimentAnalysis = async (content: string) => {
+  const body = {
+    content,
+  };
+
+  const response = await axios.post(`${API_URL}/sentiment`, body);
+
+  return response;
 };
