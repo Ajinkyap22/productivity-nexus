@@ -13,15 +13,31 @@
     "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fullcalendar/core": "^6.1.9",
+    "@fullcalendar/daygrid": "^6.1.9",
+    "@fullcalendar/react": "^6.1.9",
+    "@fullcalendar/rrule": "^6.1.9",
+    "@reduxjs/toolkit": "^1.9.5",
+    "@tanstack/react-query": "^4.35.3",
     "@types/node": "20.5.7",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
+    "axios": "^1.5.1",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "framer-motion": "^10.16.4",
+    "moment": "^2.29.4",
     "next": "13.4.19",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "5.2.2"
+    "react-redux": "^8.1.2",
+    "react-speech-recognition": "^3.10.0",
+    "regenerator-runtime": "^0.14.0",
+    "rrule": "^2.7.2",
+    "typescript": "5.2.2",
+    "uniqid": "^5.4.0"
+  },
+  "devDependencies": {
+    "@types/uniqid": "^5.3.2"
   }
 }
