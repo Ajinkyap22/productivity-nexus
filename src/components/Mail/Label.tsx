@@ -2,23 +2,27 @@ import React from "react";
 
 import { Button, Text } from "@chakra-ui/react";
 import LabelIcon from "@/components/IconComponents/LabelIcon";
+import { MailSidebarItems } from "@/types/mailSidebarItems";
 
 type Props = {
   color: string;
-  label: string;
+  label: MailSidebarItems;
+  isActive: boolean;
+  handleClick: (item: MailSidebarItems) => void;
 };
 
-const Label = ({ color, label }: Props) => {
+const Label = ({ color, label, isActive, handleClick }: Props) => {
   return (
     <Button
-      bg="transparent"
+      onClick={() => handleClick(label)}
+      bg={isActive ? "green.100" : "transparent"}
       py="0"
       px="1"
       w="full"
       justifyContent="flex-start"
       gap={3}
       _hover={{
-        bg: "gray.50",
+        bg: isActive ? "green.100" : "gray.50",
       }}
     >
       <LabelIcon w={24} h={24} color={color} />

@@ -3,19 +3,19 @@ import React from "react";
 type Props = {
   w: number;
   h: number;
-  color: string;
+  isStarred: boolean;
 };
 
-const FavoritesIcon = ({ w, h, color }: Props) => {
+const StarIcon = ({ w, h, isStarred }: Props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      fill={color}
+      fill={!isStarred ? "none" : "#2FAC85"}
       width={w}
       height={h}
       viewBox="0 0 24 24"
       strokeWidth={1.5}
-      stroke={color}
+      stroke={!isStarred ? "currentColor" : "#2FAC85"}
     >
       <path
         strokeLinecap="round"
@@ -26,4 +26,4 @@ const FavoritesIcon = ({ w, h, color }: Props) => {
   );
 };
 
-export default FavoritesIcon;
+export default StarIcon;

@@ -16,24 +16,20 @@ import MailSidebarItem from "@/components/Mail/MailSidebarItem";
 import InboxIcon from "@/components/IconComponents/InboxIcon";
 import SentIcon from "@/components/IconComponents/SentIcon";
 import FavoritesIcon from "@/components/IconComponents/FavoritesIcon";
-import DraftsIcon from "@/components/IconComponents/DraftsIcon";
+import TrashIcon from "@/components/IconComponents/TrashIcon";
 import ScheduledIcon from "@/components/IconComponents/ScheduledIcon";
-import MoreIcon from "@/components/IconComponents/MoreIcon";
 import Label from "@/components/Mail/Label";
 
 import { MailSidebarItems } from "@/types/mailSidebarItems";
+import SpamIcon from "../IconComponents/SpamIcon";
 
-const MailSidebar = () => {
-  const [activeItem, setActiveItem] = useState<MailSidebarItems>(
-    MailSidebarItems.INBOX
-  );
+type Props = {
+  activeItem: MailSidebarItems;
+  handleClick: (item: MailSidebarItems) => void;
+  openMailForm: () => void;
+};
 
-  const handleActiveItem = (item: MailSidebarItems) => {
-    if (item === MailSidebarItems.MORE) return;
-
-    setActiveItem(item);
-  };
-
+const MailSidebar = ({ activeItem, handleClick, openMailForm }: Props) => {
   const Icon = useCallback(
     (item: MailSidebarItems) => {
       switch (item) {
@@ -53,7 +49,7 @@ const MailSidebar = () => {
               color={activeItem === item ? "#2FAC85" : "#777777"}
             />
           );
-        case "Favorites":
+        case "Starred":
           return (
             <FavoritesIcon
               w={22}
@@ -69,19 +65,19 @@ const MailSidebar = () => {
               color={activeItem === item ? "#2FAC85" : "#777777"}
             />
           );
-        case "Drafts":
+        case "Trash":
           return (
-            <DraftsIcon
-              w={22}
-              h={22}
+            <TrashIcon
+              w={18}
+              h={18}
               color={activeItem === item ? "#2FAC85" : "#777777"}
             />
           );
-        case "More":
+        case "Spam":
           return (
-            <MoreIcon
-              w={22}
-              h={22}
+            <SpamIcon
+              w={18}
+              h={18}
               color={activeItem === item ? "#2FAC85" : "#777777"}
             />
           );
@@ -104,9 +100,13 @@ const MailSidebar = () => {
       borderRadius="xl"
       boxShadow="0px 0px 4px 0px rgba(0, 0, 0, 0.25)"
       p="3"
+      h="96vh"
+      position="sticky"
+      top="3"
     >
       {/* new mail button */}
       <Button
+        onClick={openMailForm}
         w="full"
         bg="primary"
         borderRadius="lg"
@@ -134,7 +134,7 @@ const MailSidebar = () => {
             item={item}
             Icon={Icon(item)}
             isActive={item === activeItem}
-            handleClick={handleActiveItem}
+            handleClick={handleClick}
           />
         ))}
       </VStack>
@@ -148,23 +148,29 @@ const MailSidebar = () => {
         <Text color="trueGray.200" size="md" fontWeight="semibold">
           Labels
         </Text>
-        <Button
-          p="0"
-          bg="transparent"
-          _hover={{
-            bg: "green.50",
-          }}
-        >
-          <Image src="/icons/plus-circle.svg" alt="new label" w="6" h="6" />
-        </Button>
       </HStack>
 
       <VStack gap={2} mt={2}>
-        <Label color="#FD3D00" label="Work" />
+        <Label
+          color="#FD3D00"
+          label={MailSidebarItems.PERSONAL}
+          isActive={activeItem === MailSidebarItems.PERSONAL}
+          handleClick={handleClick}
+        />
 
-        <Label color="#00BEFA" label="Personal" />
+        <Label
+          color="#00BEFA"
+          label={MailSidebarItems.SOCIAL}
+          isActive={activeItem === MailSidebarItems.SOCIAL}
+          handleClick={handleClick}
+        />
 
-        <Label color="#13C58D" label="Newsletters" />
+        <Label
+          color="#13C58D"
+          label={MailSidebarItems.PROMOTIONS}
+          isActive={activeItem === MailSidebarItems.PROMOTIONS}
+          handleClick={handleClick}
+        />
       </VStack>
     </GridItem>
   );

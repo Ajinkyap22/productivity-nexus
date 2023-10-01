@@ -116,6 +116,8 @@ const Sidebar = () => {
         xl: isExpanded ? 2 : 1,
       }}
       h="100vh"
+      position="sticky"
+      top="0"
       bg="sidebar"
       boxShadow={"0px 0px 4px 0px rgba(0, 0, 0, 0.20)"}
       display="flex"

@@ -9,6 +9,7 @@ import {
   FormErrorMessage,
   Button,
   HStack,
+  useToast,
 } from "@chakra-ui/react";
 
 import { validateEmail } from "@/utils/validateEmail";
@@ -18,6 +19,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createEvent } from "@/services/eventsService";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/redux/slices/userSlice";
+import axios, { AxiosError } from "axios";
 
 type Props = {
   onClose: () => void;
@@ -40,6 +42,8 @@ const EventForm = ({ onClose }: Props) => {
   const user = useSelector(selectUser);
 
   const queryClient = useQueryClient();
+
+  const toast = useToast();
 
   const createEventMutation = useMutation(
     ({
@@ -196,6 +200,20 @@ const EventForm = ({ onClose }: Props) => {
         onSuccess: () => {
           queryClient.invalidateQueries(["events"]);
           onClose();
+        },
+        onError: (error: unknown) => {
+          if (axios.isAxiosError(error)) {
+            toast({
+              title: error.response?.data.error,
+              status: "error",
+              duration: 3000,
+              isClosable: true,
+              position: "top-right",
+              containerStyle: {
+                marginTop: "1rem",
+              },
+            });
+          }
         },
       }
     );

@@ -8,6 +8,8 @@ const colors = {
   "trueGray.200": "#6E777A",
 };
 
-const theme = extendTheme({ colors });
+const theme = extendTheme({
+  colors,
+});
 
 export default theme;
