@@ -17,6 +17,8 @@ import axios from "axios";
 
 import { validateEmail } from "@/utils/validateEmail";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export default function Home() {
   const [email, setEmail] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -46,7 +48,7 @@ export default function Home() {
       };
 
       const response = await axios.post(
-        "http://localhost:8000/nylas/generate-auth-url",
+        `${API_URL}/nylas/generate-auth-url`,
         body
       );
 
