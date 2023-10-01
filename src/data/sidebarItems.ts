@@ -14,14 +14,14 @@ export const sidebarItems = [
     iconPath: "/icons/events.svg",
     activeIconPath: "/icons/events-active.svg",
   },
-  {
-    item: "Analytics",
-    iconPath: "/icons/analytics.svg",
-    activeIconPath: "/icons/analytics-active.svg",
-  },
-  {
-    item: "Theme",
-    iconPath: "/icons/theme.svg",
-    activeIconPath: "/icons/theme-active.svg",
-  },
+  // {
+  //   item: "Analytics",
+  //   iconPath: "/icons/analytics.svg",
+  //   activeIconPath: "/icons/analytics-active.svg",
+  // },
+  // {
+  //   item: "Theme",
+  //   iconPath: "/icons/theme.svg",
+  //   activeIconPath: "/icons/theme-active.svg",
+  // },
 ];
