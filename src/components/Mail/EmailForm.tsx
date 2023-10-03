@@ -28,6 +28,7 @@ import uniqid from "uniqid";
 import { Recipient } from "@/types/Recipient";
 
 import { scheduleMail, sendMail } from "@/services/mailService";
+import { generateMailFromSubject } from "@/services/openaiService";
 
 import { useSelector } from "react-redux";
 import { selectUser } from "@/redux/slices/userSlice";
@@ -35,9 +36,9 @@ import { selectUser } from "@/redux/slices/userSlice";
 import ScheduleModal from "@/components/Mail/ScheduleModal";
 import SentimentAnalysis from "@/components/Mail/SentimentAnalysis";
 import Summarize from "@/components/Mail/Summarize";
+import SpeechInput from "@/components/Mail/SpeechInput";
 
 import { ScheduledMail } from "@/types/Mail";
-import SpeechInput from "./SpeechInput";
 
 type Props = {
   handleClose: () => void;
@@ -80,6 +81,10 @@ const EmailForm = ({ handleClose }: Props) => {
       email: string;
       scheduledMail: ScheduledMail;
     }) => scheduleMail(email, scheduledMail)
+  );
+
+  const generateMailMutation = useMutation((subject: string) =>
+    generateMailFromSubject(subject)
   );
 
   useEffect(() => {
@@ -222,6 +227,15 @@ const EmailForm = ({ handleClose }: Props) => {
     setSendToError("");
   };
 
+  const generateMail = () => {
+    generateMailMutation.mutate(subject, {
+      onSuccess: (data) => {
+        console.log(data);
+        setBody(data!);
+      },
+    });
+  };
+
   return (
     <VStack
       position="fixed"
@@ -263,18 +277,39 @@ const EmailForm = ({ handleClose }: Props) => {
       <Divider />
 
       {/* subject */}
-      <FormControl>
-        <Input
-          placeholder="Subject"
-          borderRadius="none"
-          fontSize="sm"
-          outline="none"
-          border="none"
-          focusBorderColor="transparent"
-          value={subject}
-          onChange={handleSubjectChange}
-        />
-      </FormControl>
+      <HStack w="full">
+        <FormControl>
+          <Input
+            placeholder="Subject"
+            borderRadius="none"
+            fontSize="sm"
+            outline="none"
+            border="none"
+            focusBorderColor="transparent"
+            value={subject}
+            onChange={handleSubjectChange}
+          />
+        </FormControl>
+
+        <Button
+          onClick={generateMail}
+          isDisabled={!subject}
+          isLoading={generateMailMutation.isLoading}
+          bg="none"
+          _hover={{
+            bg: "none",
+          }}
+          mr="3"
+        >
+          <Text
+            bgGradient="linear-gradient(90deg, #FF00A8 0%, #FF7D00 100%)"
+            bgClip="text"
+            fontSize="xs"
+          >
+            Generate From Subject
+          </Text>
+        </Button>
+      </HStack>
 
       <Divider />
 
