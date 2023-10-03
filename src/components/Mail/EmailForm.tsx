@@ -230,7 +230,6 @@ const EmailForm = ({ handleClose }: Props) => {
   const generateMail = () => {
     generateMailMutation.mutate(subject, {
       onSuccess: (data) => {
-        console.log(data);
         setBody(data!);
       },
     });
