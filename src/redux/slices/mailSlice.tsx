@@ -1,6 +1,6 @@
 import { AllMail } from "@/types/Mail";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
+import { RootState } from "@/redux/store";
 
 type MailState = {
   activeMail: AllMail | null;

@@ -3,19 +3,16 @@ import React from "react";
 import {
   Drawer,
   DrawerBody,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
-  Button,
-  Input,
 } from "@chakra-ui/react";
 
 import EventDetails from "@/components/Events/EventDetails";
+import EventForm from "@/components/Events/EventForm";
 
 import { Event } from "@/types/event";
-import EventForm from "./EventForm";
 
 type Props = {
   modalMode: "create" | "view";
