@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { GridItem } from "@chakra-ui/react";
 
 import MailSidebar from "@/components/Mail/MailSidebar";
+const EmailForm = dynamic(() => import("@/components/Mail/EmailForm"));
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
@@ -18,7 +19,7 @@ import {
 import { MailSidebarItems } from "@/types/mailSidebarItems";
 import { usePathname, useRouter } from "next/navigation";
 import { setActiveMail } from "@/redux/slices/mailSlice";
-import EmailForm from "@/components/Mail/EmailForm";
+import dynamic from "next/dynamic";
 
 type Props = {
   children: React.ReactNode;

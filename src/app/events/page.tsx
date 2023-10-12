@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
 
 import {
   GridItem,
@@ -22,7 +23,8 @@ import { useSelector } from "react-redux";
 import { selectUser } from "@/redux/slices/userSlice";
 
 import EventsList from "@/components/Events/EventsList";
-import EventModal from "@/components/Events/EventModal";
+const EventModal = dynamic(() => import("@/components/Events/EventModal"));
+
 import { Event } from "@/types/event";
 
 const Events = () => {

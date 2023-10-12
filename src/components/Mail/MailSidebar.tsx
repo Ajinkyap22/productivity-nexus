@@ -18,10 +18,10 @@ import SentIcon from "@/components/IconComponents/SentIcon";
 import FavoritesIcon from "@/components/IconComponents/FavoritesIcon";
 import TrashIcon from "@/components/IconComponents/TrashIcon";
 import ScheduledIcon from "@/components/IconComponents/ScheduledIcon";
+import SpamIcon from "@/components/IconComponents/SpamIcon";
 import Label from "@/components/Mail/Label";
 
 import { MailSidebarItems } from "@/types/mailSidebarItems";
-import SpamIcon from "../IconComponents/SpamIcon";
 
 type Props = {
   activeItem: MailSidebarItems;
