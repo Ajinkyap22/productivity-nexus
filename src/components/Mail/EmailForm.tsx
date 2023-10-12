@@ -24,11 +24,11 @@ import { validateEmail } from "@/utils/validateEmail";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import uniqid from "uniqid";
+import { useChat } from "ai/react";
 
 import { Recipient } from "@/types/Recipient";
 
 import { scheduleMail, sendMail } from "@/services/mailService";
-import { generateMailFromSubject } from "@/services/openaiService";
 
 import { useSelector } from "react-redux";
 import { selectUser } from "@/redux/slices/userSlice";
@@ -37,6 +37,7 @@ import ScheduleModal from "@/components/Mail/ScheduleModal";
 import SentimentAnalysis from "@/components/Mail/SentimentAnalysis";
 import Summarize from "@/components/Mail/Summarize";
 import SpeechInput from "@/components/Mail/SpeechInput";
+import GenerateMail from "@/components/Mail/GenerateMail";
 
 import { ScheduledMail } from "@/types/Mail";
 
@@ -49,6 +50,7 @@ const EmailForm = ({ handleClose }: Props) => {
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   const [scheduledAt, setScheduledAt] = useState<string>("");
+  const [isGenerateDisabled, setIsGenerateDisabled] = useState(true);
 
   const [sendToError, setSendToError] = useState("");
   const [disabled, setDisabled] = useState(false);
@@ -58,6 +60,13 @@ const EmailForm = ({ handleClose }: Props) => {
   const queryClient = useQueryClient();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const { messages, handleInputChange, handleSubmit, isLoading } = useChat({
+    api: "/api/openai",
+    onFinish: () => {
+      setIsGenerateDisabled(true);
+    },
+  });
 
   const sendMailMutation = useMutation(
     ({
@@ -83,10 +92,6 @@ const EmailForm = ({ handleClose }: Props) => {
     }) => scheduleMail(email, scheduledMail)
   );
 
-  const generateMailMutation = useMutation((subject: string) =>
-    generateMailFromSubject(subject)
-  );
-
   useEffect(() => {
     if (sendToError || !sendTo || !body) {
       setDisabled(true);
@@ -105,6 +110,18 @@ const EmailForm = ({ handleClose }: Props) => {
 
   const handleSubjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSubject(e.target.value);
+
+    const eFake = {
+      target: {
+        value: `Write an email based on the following subject ${e.target.value}. The email should be polite and professional.
+        Do not provide any explanation, only return the email body.
+        \n\nSubject: ${e.target.value}\n\nEmail:`,
+      },
+    } as React.ChangeEvent<HTMLInputElement>;
+
+    handleInputChange(eFake);
+
+    setIsGenerateDisabled(!e.target.value);
   };
 
   const handleBodyChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -112,7 +129,8 @@ const EmailForm = ({ handleClose }: Props) => {
   };
 
   const handleTranscriptChange = (transcript: string) => {
-    setBody(transcript);
+    // append transcript to body
+    setBody(`${body} ${transcript}`);
   };
 
   const handleScheduledAtChange = (date: string) => {
@@ -225,15 +243,20 @@ const EmailForm = ({ handleClose }: Props) => {
     setSubject("");
     setBody("");
     setSendToError("");
+    setIsGenerateDisabled(true);
   };
 
-  const generateMail = () => {
-    generateMailMutation.mutate(subject, {
-      onSuccess: (data) => {
-        setBody(data!);
-      },
-    });
-  };
+  useEffect(() => {
+    if (messages && messages.length > 1) {
+      const lastMessage = messages[messages.length - 1];
+
+      const isPrompt = lastMessage.role === "user";
+
+      if (lastMessage && !isPrompt) {
+        setBody(lastMessage.content);
+      }
+    }
+  }, [messages]);
 
   return (
     <VStack
@@ -290,24 +313,11 @@ const EmailForm = ({ handleClose }: Props) => {
           />
         </FormControl>
 
-        <Button
-          onClick={generateMail}
-          isDisabled={!subject}
-          isLoading={generateMailMutation.isLoading}
-          bg="none"
-          _hover={{
-            bg: "none",
-          }}
-          mr="3"
-        >
-          <Text
-            bgGradient="linear-gradient(90deg, #FF00A8 0%, #FF7D00 100%)"
-            bgClip="text"
-            fontSize="xs"
-          >
-            Generate From Subject
-          </Text>
-        </Button>
+        <GenerateMail
+          isLoading={isLoading}
+          isDisabled={isGenerateDisabled}
+          handleSubmit={handleSubmit}
+        />
       </HStack>
 
       <Divider />
@@ -329,18 +339,21 @@ const EmailForm = ({ handleClose }: Props) => {
 
       <HStack w="full" p="3" justifyContent="space-between">
         <HStack>
-          <Summarize isDisabled={!body} content={body} />
+          <Summarize isDisabled={!body || isLoading} content={body} />
 
-          <SentimentAnalysis isDisabled={!body} content={body} />
+          <SentimentAnalysis isDisabled={!body || isLoading} content={body} />
 
-          <SpeechInput handleTranscript={handleTranscriptChange} />
+          <SpeechInput
+            disabled={sendMailMutation.isLoading || isLoading}
+            handleTranscript={handleTranscriptChange}
+          />
         </HStack>
 
         <HStack>
           {/* clear */}
           <Button
             onClick={handleClear}
-            isDisabled={sendMailMutation.isLoading}
+            isDisabled={sendMailMutation.isLoading || isLoading}
             bg="none"
             color="primary"
             _hover={{

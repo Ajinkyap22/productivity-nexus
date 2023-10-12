@@ -9,10 +9,11 @@ import SpeechRecognition, {
 import { Button, Image, useToast } from "@chakra-ui/react";
 
 type Props = {
+  disabled?: boolean;
   handleTranscript: (transcript: string) => void;
 };
 
-const SpeechInput = ({ handleTranscript }: Props) => {
+const SpeechInput = ({ disabled, handleTranscript }: Props) => {
   const {
     transcript,
     listening,
@@ -43,7 +44,10 @@ const SpeechInput = ({ handleTranscript }: Props) => {
   };
 
   return (
-    <Button onClick={listening ? handleStop : handleStart}>
+    <Button
+      isDisabled={disabled}
+      onClick={listening ? handleStop : handleStart}
+    >
       <Image
         src={!listening ? "/icons/mic.svg" : "/icons/stop.svg"}
         alt="microphone"

@@ -1,15 +1,11 @@
-import openai from "@/config/openai";
+import axios from "axios";
 
 export const generateMailFromSubject = async (subject: string) => {
-  // prompt gpt for mail body based on subject
-  const prompt = `Write an email to a based on the following subject ${subject}. The email should be polite and professional.
-    Do not provide any explanation, only return the email body.
-    \n\nSubject: ${subject}\n\nEmail:`;
+  const body = {
+    subject,
+  };
 
-  const chatCompletion = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
-    messages: [{ role: "user", content: prompt }],
-  });
+  const { data: chatCompletion } = await axios.post("/api/openai", body);
 
-  return chatCompletion.choices[0].message.content;
+  return chatCompletion;
 };
