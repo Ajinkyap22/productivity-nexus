@@ -7,6 +7,7 @@
 ## Table of contents
 
 - [Getting Started](#getting-started)
+- [Screenshots](#screenshots)
 - [Live Demo](#live-demo)
 - [Technologies](#technologies)
 - [Status](#status)
@@ -34,6 +35,30 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Screenshots
+
+<kbd>
+<img src="https://github.com/Ajinkyap22/productivity-nexus/blob/main/public/1.png?raw=true" width="600" alt="Inbox" />
+</kbd>
+
+<hr/>
+
+<kbd>
+  <img src="https://github.com/Ajinkyap22/productivity-nexus/blob/main/public/2.png?raw=true" width="600" alt="Write email"  />
+</kbd>
+
+<hr/>
+
+<kbd>
+<img src="https://github.com/Ajinkyap22/productivity-nexus/blob/main/public/3.png?raw=true" width="600" alt="Calendar" />
+</kbd>
+
+<hr/>
+
+<kbd>
+<img src="https://github.com/Ajinkyap22/productivity-nexus/blob/main/public/4.png?raw=true" width="600" alt="Events" />
+</kbd>
 
 ## Live Demo
 
